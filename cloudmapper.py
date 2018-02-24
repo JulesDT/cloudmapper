@@ -56,9 +56,32 @@ def run_gathering(arguments):
     gather(args)
 
 
-def run_configure():
+def run_configure(arguments):
     from cloudmapper.configure import configure
-    configure()
+    if len(arguments) == 0:
+        exit("ERROR: Missing action for configure. Should be in {add-cidr|add-account|remove-cidr|remove-account}")
+        return
+    action = arguments[0]
+    arguments = arguments[1:]
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config-file", help="Path to the config file",
+                        required=True, type=str)
+    if action == 'add-account' or action == 'remove-account':
+        required = True if action.startswith('add') else False
+        parser.add_argument("--name", help="Account name",
+                            required=required, type=str)
+        parser.add_argument("--id", help="Account ID",
+                        required=required, type=str)
+        parser.add_argument("--default", help="Default account",
+                        required=False, default="False", type=str)
+    elif action == 'add-cidr' or action == 'remove-cidr':
+        required = True if action.startswith('add') else False
+        parser.add_argument("--cidr", help="CIDR IP",
+                        required=required, type=str)
+        parser.add_argument("--name", help="CIDR Name",
+                        required=required, type=str)
+    args = parser.parse_args(arguments)
+    configure(action, args)
 
 
 def run_prepare(arguments):
@@ -148,7 +171,7 @@ def main():
     elif command == "gather":
         run_gathering(arguments)
     elif command == "configure":
-        run_configure()
+        run_configure(arguments)
     else:
         show_help()
 
