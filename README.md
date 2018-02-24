@@ -103,12 +103,13 @@ python cloudmapper.py gather --account-name my_account
 
 ## 2. Generate your config file
 
-This steps allows you yo generate your own config file.
+These steps allows you yo generate your own config file.
 ```
-python cloudmapper.py configure
+python cloudmapper.py {add-cidr|remove-cidr} --config-file CONFIG_FILE --cidr CIDR --name NAME
+python cloudmapper.py {add-account|remove-account} --config-file CONFIG_FILE --name NAME --id ID [--default DEFAULT]
 ```
 
-This will guide you into creating the config file. This will allow you to define the different AWS accounts you use in your environment or the known CIDR IPs. See `config.json.demo` as an example.
+This will allow you to define the different AWS accounts you use in your environment or the known CIDR IPs. See `config.json.demo` as an example.
 ## 3. Prepare the data
 
 This step converts the collected AWS data into a format that can be displayed in the browser by generating a `web/data.json` file.
